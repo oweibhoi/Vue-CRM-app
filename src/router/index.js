@@ -1,0 +1,80 @@
+import { createRouter } from "vue-router";
+import { createWebHistory } from "vue-router";
+
+import { isAuthenticated } from "../services/authService";
+
+import Dashboard from "../views/Dashboard.vue";
+import Login from "../views/Login.vue";
+import Books from "../views/books/Books.vue";
+import NotFound from "../views/NotFound.vue";
+
+// import BookDetails from "../views/books/BookDetails.vue";
+
+const routes = [
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+    beforeEnter: (to, from, next) => {
+      if (isAuthenticated()) {
+        next("/"); // Redirect to dashboard if already logged in
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: "/",
+    name: "Dashboard",
+    component: Dashboard,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
+  },
+  { path: "/:catchAll(.*)", name: "NotFound", component: NotFound },
+  //   {
+  //     path: "/books/:id",
+  //     name: "BookDetails",
+  //     component: BookDetails,
+  //     props: true,
+  //   },
+  {
+    path: "/books",
+    name: "Books",
+    component: Books,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
+    meta: { requiresAuth: true },
+  },
+];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!isAuthenticated()) {
+      next({
+        path: "/login",
+        query: { redirect: to.fullPath },
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
+export default router;

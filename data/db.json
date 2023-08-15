@@ -1,0 +1,49 @@
+{
+    "books": [
+        {
+            "id": 1,
+            "title": "Book 1",
+            "description": "Book 1 description",
+            "author": "Author 1",
+            "qty": "2001",
+            "category": "",
+            "availability": true
+        },
+        {
+            "id": 2,
+            "title": "Book 2",
+            "description": "Book 2 description",
+            "author": "Author 2",
+            "qty": "2002",
+            "category": "",
+            "availability": true
+        },
+        {
+            "id": 3,
+            "title": "Book 3",
+            "description": "Book 3 description",
+            "author": "Author 3",
+            "qty": "2003",
+            "category": "",
+            "availability": true
+        },
+        {
+            "id": 4,
+            "title": "Book 4",
+            "description": "Book 4 description",
+            "author": "Author 4",
+            "qty": "2004",
+            "category": "",
+            "availability": true
+        },
+        {
+            "id": 5,
+            "title": "Book 5",
+            "description": "Book 5 description",
+            "author": "Author 5",
+            "qty": "2005",
+            "category": "",
+            "availability": true
+        }
+    ]
+}
