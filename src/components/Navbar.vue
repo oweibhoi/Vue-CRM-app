@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <!-- <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#"><strong>Book Store</strong></a>
       <button
@@ -34,7 +34,12 @@
         </form>
       </div>
     </nav>
-  </div>
+  </div> -->
+  <form class="form-inline my-2 my-lg-0" @submit.prevent="logout">
+          <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">
+            Logout
+          </button>
+        </form>
 </template>
 
 <script scoped>
