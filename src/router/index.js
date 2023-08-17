@@ -7,8 +7,8 @@ import Dashboard from "../views/Dashboard.vue";
 import Login from "../views/Login.vue";
 import Books from "../views/books/Books.vue";
 import NotFound from "../views/NotFound.vue";
-
-// import BookDetails from "../views/books/BookDetails.vue";
+import Prospects from "../views/prospects/Prospects.vue";
+import Customers from "../views/customers/Customers.vue";
 
 const routes = [
   {
@@ -27,6 +27,30 @@ const routes = [
     path: "/",
     name: "Dashboard",
     component: Dashboard,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: "/prospects",
+    name: "Prospects",
+    component: Prospects,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: "/customers",
+    name: "Customers",
+    component: Customers,
     beforeEnter: (to, from, next) => {
       if (!isAuthenticated()) {
         next("/login");

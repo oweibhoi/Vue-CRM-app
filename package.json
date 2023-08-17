@@ -15,6 +15,7 @@
     "json-server": "^0.17.1",
     "vue": "^3.2.45",
     "vue-router": "^4.0.1c3",
+    "vuestic-ui": "^1.7.4",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
