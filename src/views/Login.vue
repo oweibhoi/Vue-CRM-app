@@ -3,16 +3,21 @@
     class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-12 mt-10"
   >
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2
-        class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
-      >
-        Welcome to CRM app
-      </h2>
-    </div>
+      <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <h2
+          class="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+        >
+          Welcome to CRM app
+        </h2>
+      </div>
 
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form class="space-y-6 border-solid border-2 p-10 border-gray-500 rounded-lg" @submit.prevent="loginSubmit">
-        <h6 class="text-red-400" v-if="invalidLogin">Invalid email or password!</h6>
+      <form
+        class="mt-10 space-y-6 border-solid border-2 p-10 border-gray-500 rounded-lg"
+        @submit.prevent="loginSubmit"
+      >
+        <h6 class="text-red-400" v-if="invalidLogin">
+          Invalid email or password!
+        </h6>
         <div>
           <label
             for="email"
@@ -73,7 +78,7 @@ export default {
     return {
       email: "",
       password: "",
-      invalidLogin: false
+      invalidLogin: false,
     };
   },
   methods: {

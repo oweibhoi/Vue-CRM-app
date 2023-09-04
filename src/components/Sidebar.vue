@@ -1,38 +1,15 @@
 <template>
   <div>
     <va-sidebar>
-      <va-sidebar-item>
-        <router-link
-          :to="{ name: 'Dashboard' }"
-          @click="getActiveSidebar('dashboard')"
-        >
+      <va-sidebar-item
+        v-for="item in sidebarItems"
+        :active="isActive(item.route)"
+        class="bg-slate-100"
+      >
+        <router-link :key="item.route" :to="{ name: item.label }">
           <va-sidebar-item-content>
-            <va-icon name="dashboard" />
-            <va-sidebar-item-title>Dashboard</va-sidebar-item-title>
-          </va-sidebar-item-content>
-        </router-link>
-      </va-sidebar-item>
-
-      <va-sidebar-item>
-        <router-link
-          :to="{ name: 'Prospects' }"
-          @click="getActiveSidebar('prospects')"
-        >
-          <va-sidebar-item-content>
-            <va-icon name="people" />
-            <va-sidebar-item-title>Prospects</va-sidebar-item-title>
-          </va-sidebar-item-content>
-        </router-link>
-      </va-sidebar-item>
-
-      <va-sidebar-item>
-        <router-link
-          :to="{ name: 'Customers' }"
-          @click="getActiveSidebar('customers')"
-        >
-          <va-sidebar-item-content>
-            <va-icon name="people" />
-            <va-sidebar-item-title>Customers</va-sidebar-item-title>
+            <va-icon :name="item.icon" />
+            <va-sidebar-item-title>{{ item.label }}</va-sidebar-item-title>
           </va-sidebar-item-content>
         </router-link>
       </va-sidebar-item>
@@ -40,22 +17,20 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
 import { useRoute } from "vue-router";
-import { computed } from "vue";
 
-export default {
-  name: "Sidebar",
-  data() {
-    return {
-      activeBar: "/",
-    };
-  },
-  methods: {
-    getActiveSidebar(url) {
-      this.activeBar = url;
-    },
-   
-  },
+const sidebarItems = ref([
+  { label: "Dashboard", route: "/", icon: "dashboard" },
+  { label: "Prospects", route: "/prospects", icon: "people" },
+  { label: "Customers", route: "/customers", icon: "people" },
+]);
+
+const route = useRoute();
+
+const isActive = (routePath) => {
+  return route.path === routePath;
 };
+
 </script>
