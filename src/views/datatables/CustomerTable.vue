@@ -7,7 +7,7 @@
       </template>
     </VaDataTable>
   </div>
-  <VaButtonGroup size="small" class="mt-3">
+  <VaButtonGroup size="small">
     <VaButton @click="get_prospects(links.first)">First</VaButton>
     <VaButton @click="get_prospects(links.prev)">Prev</VaButton>
     <VaButton @click="get_prospects(links.next)">Next</VaButton>
@@ -36,7 +36,6 @@ export default defineComponent({
       first: "",
       next: "",
       last: "",
-      current: "",
     };
 
     return {
@@ -58,7 +57,7 @@ export default defineComponent({
       headers: myHeaders,
     };
 
-    fetch("http://127.0.0.1:8000/api/v1/prospects", requestOptions)
+    fetch("http://127.0.0.1:8000/api/v1/customers", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         result.data.map((el) => {
@@ -84,7 +83,6 @@ export default defineComponent({
   methods: {
     get_prospects(link) {
       if (!link) return;
-      this.current = link;
       this.items = [];
       var myHeaders = new Headers();
       myHeaders.append("Accept", "application/json");
@@ -115,7 +113,7 @@ export default defineComponent({
           this.links.first = links.first;
           this.links.next = links.next;
           this.links.last = links.last;
-          // console.log(result);
+        //   console.log(result);
         })
         .catch((error) => console.log("error", error));
     },
