@@ -8,10 +8,12 @@
     </VaDataTable>
   </div>
   <VaButtonGroup size="small" class="mt-3">
-    <VaButton @click="get_prospects(links.first)">First</VaButton>
-    <VaButton @click="get_prospects(links.prev)">Prev</VaButton>
-    <VaButton @click="get_prospects(links.next)">Next</VaButton>
-    <VaButton @click="get_prospects(links.last)">Last</VaButton>
+    <VaButton @click="getProspectByLink(links.first)">First</VaButton>
+    <VaButton @click="getProspectByLink(links.prev)">Prev</VaButton>
+    <VaButton @click="getProspectByLink(links.next)">Next</VaButton>
+    <VaButton @click="getProspectByLink(links.last)" id="btn-record-last"
+      >Last</VaButton
+    >
   </VaButtonGroup>
 </template>
 
@@ -46,43 +48,47 @@ export default defineComponent({
     };
   },
   mounted() {
-    var myHeaders = new Headers();
-    myHeaders.append("Accept", "application/json");
-    myHeaders.append(
-      "Authorization",
-      "Bearer " + localStorage.getItem("auth_token")
-    );
-
-    var requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-    };
-
-    fetch("http://127.0.0.1:8000/api/v1/prospects", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        result.data.map((el) => {
-          this.items.push({
-            id: el.id,
-            name: el.name,
-            email: el.email,
-            phone: el.phone,
-            postcode: el.postalCode,
-          });
-        });
-
-        const links = result.links;
-        this.links.prev = links.prev;
-        this.links.first = links.first;
-        this.links.next = links.next;
-        this.links.last = links.last;
-
-        // console.log(result);
-      })
-      .catch((error) => console.log("error", error));
+    this.getAllProspects();
   },
   methods: {
-    get_prospects(link) {
+    getAllProspects() {
+      this.items = [];
+      var myHeaders = new Headers();
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append(
+        "Authorization",
+        "Bearer " + localStorage.getItem("auth_token")
+      );
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+      };
+
+      fetch("http://127.0.0.1:8000/api/v1/prospects", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          result.data.map((el) => {
+            this.items.push({
+              id: el.id,
+              name: el.name,
+              email: el.email,
+              phone: el.phone,
+              postcode: el.postalCode,
+            });
+          });
+
+          const links = result.links;
+          this.links.prev = links.prev;
+          this.links.first = links.first;
+          this.links.next = links.next;
+          this.links.last = links.last;
+
+          // console.log(result);
+        })
+        .catch((error) => console.log("error", error));
+    },
+    getProspectByLink(link) {
       if (!link) return;
       this.current = link;
       this.items = [];

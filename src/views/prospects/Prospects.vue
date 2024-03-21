@@ -5,7 +5,7 @@
       Add Prospect
     </VaButton>
   </div>
-  <ProspectTable />
+  <ProspectTable ref="prospectTableRef" />
 
   <VaModal
     v-model="showModal"
@@ -98,7 +98,9 @@ export default {
       if (result.ok) {
         this.$vaToast.init({ message: "Saved Successfully", color: "success" });
         this.clearAddProspectForm();
-        ProspectTable.methods.get_prospects(ProspectTable.data().links.current);
+        // const btnRecordLast = document.getElementById("btn-record-last");
+        // btnRecordLast.click();
+        this.$refs.prospectTableRef.getAllProspects();
       } else {
         this.$vaToast.init({ message: "Saved Failed!", color: "danger" });
         this.showModal = true;
