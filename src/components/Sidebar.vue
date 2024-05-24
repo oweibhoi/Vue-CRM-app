@@ -3,7 +3,8 @@
     <va-sidebar>
       <va-sidebar-item
         v-for="item in sidebarItems"
-        :active="isActive(item.route)"
+        :active="isActive(item.routes)"
+        :id="item.id"
         class="bg-slate-100"
       >
         <router-link :key="item.route" :to="{ name: item.label }">
@@ -22,15 +23,15 @@ import { ref } from "vue";
 import { useRoute } from "vue-router";
 
 const sidebarItems = ref([
-  { label: "Dashboard", route: "/", icon: "dashboard" },
-  { label: "Prospects", route: "/prospects", icon: "people" },
-  { label: "Customers", route: "/customers", icon: "people" },
+  { label: "Dashboard", route: "/", routes: ["Dashboard"], icon: "dashboard", id: "sbDashboard" },
+  { label: "Prospects", route: "/prospects", routes: ["Prospects", "Prospect's Details"], icon: "people", id: "sbProspects" },
+  { label: "Customers", route: "/customers", routes:["Customers"], icon: "people", id: "sbCustomers" },
 ]);
 
 const route = useRoute();
 
 const isActive = (routePath) => {
-  return route.path === routePath;
+  return routePath.includes(route.name);
 };
 
 </script>

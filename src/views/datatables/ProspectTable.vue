@@ -2,8 +2,13 @@
   <div class="h-[700px] w-full">
     <VaDataTable class="table-crud" :items="items" :columns="columns" striped>
       <template #cell(actions)="{ rowIndex }">
-        <VaButton preset="plain" icon="edit" />
-        <VaButton preset="plain" icon="delete" class="ml-3" />
+        <VaButton preset="plain" icon="visibility" @click="handleView(items[rowIndex].id)" />
+        <VaButton
+          preset="plain"
+          icon="delete"
+          @click="handleDelete(items[rowIndex])"
+          class="ml-3"
+        />
       </template>
     </VaDataTable>
   </div>
@@ -51,6 +56,38 @@ export default defineComponent({
     this.getAllProspects();
   },
   methods: {
+    handleView(id) {
+      this.$router.push({ name: "Prospect's Details", params: { id: id } });
+    },
+    handleDelete(item) {
+      this.$vaModal
+        .confirm("Are you sure you want to delete this prospect?")
+        .then((ok) => {
+          if (ok) {
+            var myHeaders = new Headers();
+            myHeaders.append("Accept", "application/json");
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append(
+              "Authorization",
+              "Bearer " + localStorage.getItem("auth_token")
+            );
+
+            var requestOptions = {
+              method: "PUT",
+              headers: myHeaders,
+              body: JSON.stringify({status: 0})
+            };
+
+            fetch("http://127.0.0.1:8000/api/v1/customer-status/"+item.id, requestOptions)
+              .then((response) => response.json())
+              .then((result) => {
+                this.$vaToast.init({ message: "Deleted Successfully", color: "success" });
+                this.getAllProspects();
+              })
+              .catch((error) => console.log("error", error));
+          }
+        });
+    },
     getAllProspects() {
       this.items = [];
       var myHeaders = new Headers();
