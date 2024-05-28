@@ -40,6 +40,7 @@ const routes = [
     path: "/prospects",
     name: "Prospects",
     component: Prospects,
+    meta: { title: "Prospects"},
     beforeEnter: (to, from, next) => {
       if (!isAuthenticated()) {
         next("/login");

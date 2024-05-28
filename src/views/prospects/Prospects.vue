@@ -1,5 +1,4 @@
 <template>
-  <h5>Prospects</h5>
   <AddProspectModal></AddProspectModal>
   <ProspectTable />
 </template>

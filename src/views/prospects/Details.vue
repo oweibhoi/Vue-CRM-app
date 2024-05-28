@@ -1,2 +1,3 @@
 <template>
+    Details
 </template>
