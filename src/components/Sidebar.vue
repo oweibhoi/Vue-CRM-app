@@ -25,7 +25,7 @@ import { useRoute } from "vue-router";
 const sidebarItems = ref([
   { label: "Dashboard", route: "/", routes: ["Dashboard"], icon: "dashboard", id: "sbDashboard" },
   { label: "Prospects", route: "/prospects", routes: ["Prospects", "Prospect's Details"], icon: "people", id: "sbProspects" },
-  { label: "Customers", route: "/customers", routes:["Customers"], icon: "people", id: "sbCustomers" },
+  { label: "Customers", route: "/customers", routes:["Customers", "Customer's Details"], icon: "people", id: "sbCustomers" },
 ]);
 
 const route = useRoute();

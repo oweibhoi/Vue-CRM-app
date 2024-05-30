@@ -10,6 +10,7 @@ import NotFound from "../views/NotFound.vue";
 import Prospects from "../views/prospects/Prospects.vue";
 import ProspectDetails from "../views/prospects/ProspectDetails.vue";
 import Customers from "../views/customers/Customers.vue";
+import CustomerDetails from "../views/customers/CustomerDetails.vue";
 
 const routes = [
   {
@@ -65,6 +66,18 @@ const routes = [
     path: "/customers",
     name: "Customers",
     component: Customers,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: "/customers/details/:id",
+    name: "Customer's Details",
+    component: CustomerDetails,
     beforeEnter: (to, from, next) => {
       if (!isAuthenticated()) {
         next("/login");
