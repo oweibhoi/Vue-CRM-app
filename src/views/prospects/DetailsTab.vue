@@ -6,7 +6,7 @@
       </VaTab>
     </template>
   </VaTabs>
-  <Details v-if="tabVal == 0"></Details>
+  <Details v-if="tabVal == 0" :prospectID=id></Details>
   <Todos v-if="tabVal == 1"></Todos>
   <Notes v-if="tabVal == 2"></Notes>
 </template>
@@ -17,7 +17,6 @@ import Todos from "./Todos.vue";
 import Notes from "./Notes.vue";
 
 export default {
-  props: ["prospectID"],
   components: {
     Details,
     Todos,
@@ -28,7 +27,7 @@ export default {
     var id = 0;
     return { id, tabVal };
   },
-  mounted() {
+  beforeMount() {
     this.id = this.$route.params.id;
   }
 };
