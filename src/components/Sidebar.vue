@@ -26,6 +26,7 @@ const sidebarItems = ref([
   { label: "Dashboard", route: "/", routes: ["Dashboard"], icon: "dashboard", id: "sbDashboard" },
   { label: "Prospects", route: "/prospects", routes: ["Prospects", "Prospect's Details"], icon: "people", id: "sbProspects" },
   { label: "Customers", route: "/customers", routes:["Customers", "Customer's Details"], icon: "people", id: "sbCustomers" },
+  { label: "Settings", route: "/settings", routes:["Settings"], icon: "settings", id: "sbSettings" },
 ]);
 
 const route = useRoute();

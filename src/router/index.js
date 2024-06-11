@@ -11,6 +11,7 @@ import Prospects from "../views/prospects/Prospects.vue";
 import ProspectDetails from "../views/prospects/ProspectDetails.vue";
 import Customers from "../views/customers/Customers.vue";
 import CustomerDetails from "../views/customers/CustomerDetails.vue";
+import Settings from "../views/settings/Settings.vue";
 
 const routes = [
   {
@@ -78,6 +79,18 @@ const routes = [
     path: "/customers/details/:id",
     name: "Customer's Details",
     component: CustomerDetails,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: "/settings",
+    name: "Settings",
+    component: Settings,
     beforeEnter: (to, from, next) => {
       if (!isAuthenticated()) {
         next("/login");
