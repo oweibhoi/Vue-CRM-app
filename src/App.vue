@@ -25,7 +25,7 @@ export default {
     </div>
     <div class="flex-initial w-11/12 p-5">
       <header class="m-5">
-       <BreadCrumbs></BreadCrumbs>
+       <BreadCrumbs v-if="isAuthenticated"></BreadCrumbs>
       </header>
 
       <router-view> </router-view>
