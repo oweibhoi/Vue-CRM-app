@@ -1,12 +1,13 @@
 <template>
-  <AddSettingsTodoModal/>
+  <AddSettingsTodoModal :getAllTodos="getAllTodos"/>
+  <UpdateSettingsTodoModal :showUpdateModal="showUpdateModal" :updateID="updateID" :getAllTodos="getAllTodos" @closed="closeUpdateModal()"/>
   <div class="h-[700px] w-full">
     <VaDataTable class="table-crud" :items="items" :columns="columns" striped>
       <template #cell(actions)="{ rowIndex }">
         <VaButton
           preset="plain"
-          icon="visibility"
-          @click="handleView(items[rowIndex].id)"
+          icon="edit"
+          @click="handleEdit(items[rowIndex].id, !showUpdateModal)"
         />
         <VaButton
           preset="plain"
@@ -29,10 +30,12 @@
 
 <script>
 import AddSettingsTodoModal from "../modals/AddSettingsTodoModal.vue";
+import UpdateSettingsTodoModal from "../modals/UpdateSettingsTodoModal.vue";
 
 export default {
   components: {
-    AddSettingsTodoModal
+    AddSettingsTodoModal,
+    UpdateSettingsTodoModal
   },
   data() {
     const items = [];
@@ -51,22 +54,33 @@ export default {
       current: "",
     };
 
+    //for update..
+    const showUpdateModal = false;
+    const updateID = 0;
+
     return {
       items,
       columns,
       links,
+      showUpdateModal,
+      updateID
     };
   },
   mounted() {
     this.getAllTodos();
   },
   methods: {
-    handleView(id) {
-      this.$router.push({ name: "Prospect's Details", params: { id: id } });
+    handleEdit(id, modalState) {
+      this.updateID = id;
+      this.showUpdateModal = modalState;
     },
     handleDelete(item) {
       this.$vaModal
-        .confirm("Are you sure you want to delete this todo?")
+        .confirm({
+          message: "Do you want to delete this todo?",
+          title: "Are you sure?",
+          okText: "Yes",
+        })
         .then((ok) => {
           if (ok) {
             var myHeaders = new Headers();
@@ -80,13 +94,19 @@ export default {
             var requestOptions = {
               method: "PUT",
               headers: myHeaders,
-              body: JSON.stringify({status: 0})
+              body: JSON.stringify({ status: 0 }),
             };
 
-            fetch("http://127.0.0.1:8000/api/v1/todos-status/"+item.id, requestOptions)
+            fetch(
+              "http://127.0.0.1:8000/api/v1/todos-status/" + item.id,
+              requestOptions
+            )
               .then((response) => response.json())
               .then((result) => {
-                this.$vaToast.init({ message: "Deleted Successfully", color: "success" });
+                this.$vaToast.init({
+                  message: "Deleted Successfully",
+                  color: "success",
+                });
                 this.getAllTodos();
               })
               .catch((error) => console.log("error", error));
@@ -164,6 +184,9 @@ export default {
         })
         .catch((error) => console.log("error", error));
     },
+    closeUpdateModal() {
+      this.showUpdateModal = false;
+    }
   },
 };
 </script>

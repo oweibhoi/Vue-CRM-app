@@ -1,17 +1,13 @@
 <template>
-  <div class="float-right mb-1">
-    <VaButton icon="add" color="primary" @click="showModal = !showModal">
-      Add Todo
-    </VaButton>
-  </div>
   <VaModal
     v-model="showModal"
     ok-text="Save"
-    @Ok="saveTodo()"
+    @Ok="updateTodo()"
     size="large"
     max-width="100%"
+    @close="closeModal()"
   >
-    <h3 class="va-h6">Add Todo</h3>
+    <h3 class="va-h6">Edit Todo</h3>
     <VaForm class="mb-2 flex flex-col gap-4">
       <VaAlert
         color="#fdeae7"
@@ -20,6 +16,7 @@
         v-html="errorMsg"
       >
       </VaAlert>
+      <VaInput v-model="id" label="ID" readonly />
       <VaInput v-model="name" label="Todo Name" />
       <VaRadio
         v-model="type"
@@ -33,6 +30,7 @@
             type: 'C',
           },
         ]"
+        value-by="type"
       />
     </VaForm>
   </VaModal>
@@ -42,28 +40,56 @@
 import { reactive } from "vue";
 
 export default {
-  props: ["getAllTodos"],
+  props: ["showUpdateModal", "updateID", "getAllTodos"],
   data() {
     return {
-      showModal: false,
+      id: "",
       name: "",
       type: "",
       errorMsg: "",
+      showModal: false,
     };
   },
+  watch: {
+    showUpdateModal(newVal) {
+      this.showModal = newVal;
+      if (this.showModal) {
+        this.getDetails();
+      }
+    },
+  },
   methods: {
-    async saveTodo() {
+    getDetails() {
+      fetch("http://127.0.0.1:8000/api/v1/settings-todos/" + this.updateID, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("auth_token"),
+          Accept: "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          const data = result.data;
+          this.id = data.id;
+          this.name = data.name;
+          this.type = data.type;
+        })
+        .catch((error) => console.log("error", error));
+    },
+    async updateTodo() {
       this.errorMsg = "";
 
       const formData = reactive({
+        id: this.id,
         name: this.name,
-        type: this.type.type,
+        type: this.type,
       });
 
       const result = await fetch(
-        "http://127.0.0.1:8000/api/v1/settings-todos",
+        "http://127.0.0.1:8000/api/v1/settings-todos/" + this.id,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + localStorage.getItem("auth_token"),
@@ -75,12 +101,12 @@ export default {
 
       if (result.ok) {
         this.$vaToast.init({ message: "Saved Successfully", color: "success" });
-        this.clearAddTodoForm();
+        this.clearUpdateTodoForm();
         this.getAllTodos();
       } else {
         this.showModal = true;
         this.$vaToast.init({
-          message: "Failed to save data!",
+          message: "Failed to update data!",
           color: "danger",
         });
 
@@ -92,9 +118,13 @@ export default {
         });
       }
     },
-    clearAddTodoForm() {
+    clearUpdateTodoForm() {
+      this.id = "";
       this.name = "";
-      this.type.type = "";
+      this.type = "";
+    },
+    closeModal() {
+      this.$emit("closed");
     },
   },
 };

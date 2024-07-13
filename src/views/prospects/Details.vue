@@ -3,7 +3,13 @@
     <div class="grid grid-cols-2">
       <div>
         <VaForm class="mb-2 flex flex-col gap-4">
-          <div class="text-red-800" v-if="errorMsg">{{ errorMsg }}</div>
+          <VaAlert
+            color="#fdeae7"
+            text-color="#940909"
+            v-if="errorMsg"
+            v-html="errorMsg"
+          >
+          </VaAlert>
           <input type="hidden" v-model="id" />
           <VaInput v-model="name" label="Name" />
           <VaRadio

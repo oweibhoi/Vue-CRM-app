@@ -2,7 +2,11 @@
   <div class="h-[700px] w-full">
     <VaDataTable class="table-crud" :items="items" :columns="columns" striped>
       <template #cell(actions)="{ rowIndex }">
-        <VaButton preset="plain" icon="visibility" @click="handleView(items[rowIndex].id)" />
+        <VaButton
+          preset="plain"
+          icon="visibility"
+          @click="handleView(items[rowIndex].id)"
+        />
         <VaButton
           preset="plain"
           icon="delete"
@@ -61,7 +65,13 @@ export default defineComponent({
     },
     handleDelete(item) {
       this.$vaModal
-        .confirm("Are you sure you want to delete this prospect?")
+        .confirm({
+          message:
+            "Do you want to delete this prospect?",
+          title: "Are you sure?",
+          okText: "Yes",
+          cancelText: "Cancel",
+        })
         .then((ok) => {
           if (ok) {
             var myHeaders = new Headers();
@@ -75,13 +85,19 @@ export default defineComponent({
             var requestOptions = {
               method: "PUT",
               headers: myHeaders,
-              body: JSON.stringify({status: 0})
+              body: JSON.stringify({ status: 0 }),
             };
 
-            fetch("http://127.0.0.1:8000/api/v1/customer-status/"+item.id, requestOptions)
+            fetch(
+              "http://127.0.0.1:8000/api/v1/customer-status/" + item.id,
+              requestOptions
+            )
               .then((response) => response.json())
               .then((result) => {
-                this.$vaToast.init({ message: "Deleted Successfully", color: "success" });
+                this.$vaToast.init({
+                  message: "Deleted Successfully",
+                  color: "success",
+                });
                 this.getAllProspects();
               })
               .catch((error) => console.log("error", error));

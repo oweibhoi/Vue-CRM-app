@@ -7,7 +7,7 @@
     </template>
   </VaTabs>
   <Details v-if="tabVal == 0" :prospectID=id></Details>
-  <Todos v-if="tabVal == 1"></Todos>
+  <Todos v-if="tabVal == 1" :prospectID=id></Todos>
   <Notes v-if="tabVal == 2"></Notes>
 </template>
 

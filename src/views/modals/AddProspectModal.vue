@@ -8,12 +8,16 @@
     v-model="showModal"
     ok-text="Save"
     @Ok="saveProspect()"
-    size="large"
-    max-width="100%"
   >
     <h3 class="va-h6">Add Prospect</h3>
-    <VaForm class="mb-2 flex flex-col gap-4">
-      <div class="text-red-800" v-if="errorMsg">{{ errorMsg }}</div>
+    <VaForm class="mb-2 flex flex-col gap-6">
+      <VaAlert
+        color="#fdeae7"
+        text-color="#940909"
+        v-if="errorMsg"
+        v-html="errorMsg"
+      >
+      </VaAlert>
       <VaInput v-model="name" label="Name" />
       <VaRadio
         v-model="type"
@@ -92,7 +96,7 @@ export default {
         result.json().then((data) => {
           const errors = data.errors;
           Object.entries(errors).forEach(([key, value]) => {
-            this.errorMsg += value.map((item) => item + " ");
+            this.errorMsg += value.map((item) => item + "<br/>");
           });
         });
       }
