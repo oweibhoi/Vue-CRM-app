@@ -7,7 +7,7 @@
   <VaModal
     v-model="showModal"
     ok-text="Save"
-    @Ok="saveTodo()"
+    @Ok="handleSave()"
     size="large"
     max-width="100%"
   >
@@ -33,69 +33,48 @@
             type: 'C',
           },
         ]"
+        value-by="type"
       />
     </VaForm>
   </VaModal>
 </template>
 
 <script>
-import { reactive } from "vue";
+import { ref } from "vue";
+import { useToast } from "vuestic-ui";
+import settingsTodoController from "../../controllers/settingsTodoController";
 
 export default {
-  props: ["getAllTodos"],
-  data() {
-    return {
-      showModal: false,
-      name: "",
-      type: "",
-      errorMsg: "",
-    };
-  },
-  methods: {
-    async saveTodo() {
-      this.errorMsg = "";
+  props: ['todos'],
+  setup(props) {
+    const { init } = useToast();
+    const showModal = ref(false);
+    const name = ref(null);
+    const type = ref(null);
 
-      const formData = reactive({
-        name: this.name,
-        type: this.type.type,
+    const { data, errorMsg, addTodo } = settingsTodoController();
+
+    const handleSave = async () => {
+      await addTodo("http://127.0.0.1:8000/api/v1/settings-todos", {
+        name: name.value,
+        type: type.value,
       });
-
-      const result = await fetch(
-        "http://127.0.0.1:8000/api/v1/settings-todos",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("auth_token"),
-            Accept: "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-
-      if (result.ok) {
-        this.$vaToast.init({ message: "Saved Successfully", color: "success" });
-        this.clearAddTodoForm();
-        this.getAllTodos();
+      if (errorMsg.value) {
+        showModal.value = true;
+        init({ message: "Saved Failed", color: "danger" });
       } else {
-        this.showModal = true;
-        this.$vaToast.init({
-          message: "Failed to save data!",
-          color: "danger",
-        });
-
-        result.json().then((data) => {
-          const errors = data.errors;
-          Object.entries(errors).forEach(([key, value]) => {
-            this.errorMsg += value.map((item) => item + "<br/>");
-          });
-        });
+        init({ message: "Saved Successfully", color: "success" });
+        props.todos.push(data.value.data);
+        clearAddTodoForm();
       }
-    },
-    clearAddTodoForm() {
-      this.name = "";
-      this.type.type = "";
-    },
+    };
+
+    const clearAddTodoForm = () => {
+      name.value = null;
+      type.value = null;
+    };
+
+    return { showModal, name, type, errorMsg, handleSave };
   },
 };
 </script>

@@ -40,7 +40,7 @@
 import { reactive } from "vue";
 
 export default {
-  props: ["showUpdateModal", "updateID", "getAllTodos"],
+  props: ["showUpdateModal", "updateID", "todos"],
   data() {
     return {
       id: "",
@@ -101,8 +101,13 @@ export default {
 
       if (result.ok) {
         this.$vaToast.init({ message: "Saved Successfully", color: "success" });
+        this.todos.map(item => {
+          if(item.id === this.id) {
+            item.name = this.name,
+            item.type = this.type
+          }
+        })
         this.clearUpdateTodoForm();
-        this.getAllTodos();
       } else {
         this.showModal = true;
         this.$vaToast.init({

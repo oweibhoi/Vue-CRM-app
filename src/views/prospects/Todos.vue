@@ -8,8 +8,12 @@
           size="small"
           v-if="!items[rowIndex].todos_id"
           @click="handleComplete(items[rowIndex].id)"
-          >Mark as Complete</VaButton
-        >
+          >Mark as Complete</VaButton>
+          <VaButton
+          icon="check"
+          size="small"
+          v-if="items[rowIndex].todos_id"
+          />
       </template>
     </VaDataTable>
   </div>
@@ -57,7 +61,8 @@ export default {
       )
         .then((response) => response.json())
         .then((result) => {
-          result.forEach((item) => {
+          const data = result.data;
+          data.forEach((item) => {
             this.items.push({
               id: item.id,
               task: item.name,
