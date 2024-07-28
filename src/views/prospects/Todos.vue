@@ -61,7 +61,7 @@ export default {
       )
         .then((response) => response.json())
         .then((result) => {
-          const data = result.data;
+          const data = result;
           data.forEach((item) => {
             this.items.push({
               id: item.id,

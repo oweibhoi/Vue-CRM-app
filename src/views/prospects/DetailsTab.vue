@@ -8,7 +8,7 @@
   </VaTabs>
   <Details v-if="tabVal == 0" :prospectID=id></Details>
   <Todos v-if="tabVal == 1" :prospectID=id></Todos>
-  <Notes v-if="tabVal == 2"></Notes>
+  <Notes v-if="tabVal == 2" :prospectID=id></Notes>
 </template>
 
 <script>
