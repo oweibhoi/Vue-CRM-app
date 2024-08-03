@@ -13,7 +13,7 @@
           icon="check"
           size="small"
           v-if="items[rowIndex].todos_id"
-          />
+          >Completed </VaButton>
       </template>
     </VaDataTable>
   </div>

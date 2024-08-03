@@ -4,7 +4,6 @@
       <va-navbar-item class="logo"> LOGO </va-navbar-item>
     </template>
     <template #right>
-      <va-navbar-item class="p-3 px-3 rounded-md">Profile</va-navbar-item>
       <va-navbar-item class="bg-cyan-950 p-3 px-3 rounded-md"><a href="javascript:void(0);" @click.prevent="logout">Logout</a></va-navbar-item>
     </template>
   </va-navbar>

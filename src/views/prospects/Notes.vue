@@ -70,6 +70,7 @@ export default {
           created_date: formatDatetime(new Date()),
           notes: data.value.notes,
         });
+        notes.value = "";
       } else {
         init({
           message: errorMsg.value,
