@@ -31,7 +31,7 @@ import { formatDatetime } from "../../helper.js";
 import { useToast, useModal } from "vuestic-ui";
 
 export default {
-  props: ["prospectID"],
+  props: ["prospectID", "notesData"],
   setup(props) {
     const items = ref([]);
     const columns = [{ key: "created_date" }, { key: "notes" }];
@@ -40,16 +40,7 @@ export default {
     const { data, errorMsg, success, getNotes, insertNote } = notesController();
     const { init } = useToast();
 
-    const loadData = async () => {
-      await getNotes(props.prospectID);
-      data.value.map((item) => {
-        items.value.push({
-          created_date: formatDatetime(item.created_at),
-          notes: item.notes,
-        });
-      });
-    };
-    loadData();
+    items.value = props.notesData;
 
     const handleSaveNote = async () => {
       if (!notes.value) {
